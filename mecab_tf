@@ -1,0 +1,116 @@
+import kss
+import pandas as pd
+import MeCab
+import re
+
+data = pd.read_csv("Data/resume_raw_data.csv", encoding='utf-8')
+
+count1 = data["RESUME1"].size
+count2 = data["RESUME2"].size
+count3 = data["RESUME3"].size
+count4 = data["RESUME4"].size
+count5 = data["RESUME5"].size
+
+full_resume1 = []
+
+m = MeCab.Tagger()
+
+noun_tag = list()
+noun_tag1 = list()
+
+for i in range(count1):
+    for sent in kss.split_sentences(data["RESUME1"][i]):
+        full_resume1.append(sent.replace('&quot;','"').replace('&#160;',""))
+        nouns = m.parse(sent) # list of str like
+        ##print(sent)
+        
+        k = re.compile('^NNG')
+        for r in nouns.split('\n'):
+            p = r.split('\t')
+            if len(p)>1:
+                w,o = p
+                t = o.split(',')[0]
+                if k.match(t) is not None:
+                    noun_tag.append(w)
+                    noun_tag1.append(w+"/"+t) 
+                    
+for i in range(count2):
+    for sent in kss.split_sentences(data["RESUME2"][i]):
+        full_resume1.append(sent.replace('&quot;','"').replace('&#160;',""))
+        nouns = m.parse(sent) # list of str like
+        ##print(sent)
+        
+        k = re.compile('^NNG')
+        for r in nouns.split('\n'):
+            p = r.split('\t')
+            if len(p)>1:
+                w,o = p
+                t = o.split(',')[0]
+                if k.match(t) is not None:
+                    noun_tag.append(w)
+                    noun_tag1.append(w+"/"+t) 
+                    
+for i in range(count3):
+    for sent in kss.split_sentences(data["RESUME3"][i]):
+        full_resume1.append(sent.replace('&quot;','"').replace('&#160;',""))
+        nouns = m.parse(sent) # list of str like
+        ##print(sent)
+        
+        k = re.compile('^NNG')
+        for r in nouns.split('\n'):
+            p = r.split('\t')
+            if len(p)>1:
+                w,o = p
+                t = o.split(',')[0]
+                if k.match(t) is not None:
+                    noun_tag.append(w)
+                    noun_tag1.append(w+"/"+t) 
+                    
+for i in range(count4):
+    for sent in kss.split_sentences(data["RESUME4"][i]):
+        full_resume1.append(sent.replace('&quot;','"').replace('&#160;',""))
+        nouns = m.parse(sent) # list of str like
+        ##print(sent)
+        
+        k = re.compile('^NNG')
+        for r in nouns.split('\n'):
+            p = r.split('\t')
+            if len(p)>1:
+                w,o = p
+                t = o.split(',')[0]
+                if k.match(t) is not None:
+                    noun_tag.append(w)
+                    noun_tag1.append(w+"/"+t) 
+                    
+for i in range(count5):
+    for sent in kss.split_sentences(data["RESUME5"][i]):
+        full_resume1.append(sent.replace('&quot;','"').replace('&#160;',""))
+        nouns = m.parse(sent) # list of str like
+        ##print(sent)
+        
+        k = re.compile('^NNG')
+        for r in nouns.split('\n'):
+            p = r.split('\t')
+            if len(p)>1:
+                w,o = p
+                t = o.split(',')[0]
+                if k.match(t) is not None:
+                    noun_tag.append(w)
+                    noun_tag1.append(w+"/"+t) 
+
+
+noun_tag_set = set(noun_tag1)
+noun_tag_list = list(noun_tag_set)
+
+for tag in noun_tag_list :
+    dict ={}
+    for tag in noun_tag1 :
+        dict[tag] = 1 + (0 if dict.get(tag) is None else dict[tag])
+        
+word_list = sorted(dict.items(), key=lambda x: x[1], reverse=True)        
+with open('RESUME_TF상위100개NNG.txt','w') as f:
+    
+    for data in word_list[:100] : 
+        str_data = str(data)
+        f.write(str_data)
+        f.write("\n")
