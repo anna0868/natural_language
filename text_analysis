@@ -1,0 +1,48 @@
+1. TFIDF의 입력값 : resume
+
+    tfidfvect = TfidfVectorizer(token_pattern='(?u)\\b\\w+\\b')
+    tfidfvect.fit_transform(noun_tag) 
+    
+    noun_Tag = ['resume1',
+                'resume2',
+                'resume3',
+                'resume4',
+                'resume5'] 
+    
+    
+    noun_Tag = ['컴퓨터 공학을 전공했습니다. 나는 최승아입니다. ..... 수학을 좋아합니다.',
+                '나는 롯데정보통신을 다닙니다. .... 나의 취미는 영화감상입니다.',
+                '나는 책읽는 것을 좋아합니다....... 나는 최승아입니다'] 
+    
+    참고) seungah / text analysis / keyword extraction / TFIDF / ★resume_TFIDF / resume_tfidf.py
+    
+2. TEXTRANK 입력값 : sentence
+     
+    keyword_extractor = KeywordSummarizer(
+        tokenize = komoran_tokenize,
+        window = -1,
+        verbose = False
+    )
+
+    keywords = keyword_extractor.summarize(sents, topk=200)
+    
+    
+    # 전체 RESUME 의 sentences를 다 잘라서 입력  
+    sents = ['sent1', 'sent2', ...... 'sent350000' ]
+    sents = ['저/NP 는/JX 컴퓨터공학/NNG 을/JKO 전공/NNG 하/XSV 았/EP 습니다/EC',
+             '프로그램/NNP 개발/NNP 공부/NNG 를/JKO 하/VV 았/EP 습니다/EC', 
+             ... ]
+    
+    
+    참고) seungah / text analysis / keyword extraction / textrank / ★resume_textrank / resume_textrank.py
+
+
+3. W2V-GENSIM 입력값 : list 안의 list
+
+    %%time
+    #window크기 5, 최소 출현수 2, skip-gram, 10000번 학습
+    model = Word2Vec(sent_data, window = 5, min_count=2, sg=1)
+    
+    # 전체 RESUME 의 sentences를 다 잘라서 list 안의 list로 입력  
+    sent_data = [['컴퓨터', '공학', '전공'], ['프로그램', '개발', '공부'],  ........... ,  ['단추', '중요', '마무리', '의존', '협동']]
+    
