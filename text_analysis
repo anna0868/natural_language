@@ -46,3 +46,14 @@
     # 전체 RESUME 의 sentences를 다 잘라서 list 안의 list로 입력  
     sent_data = [['컴퓨터', '공학', '전공'], ['프로그램', '개발', '공부'],  ........... ,  ['단추', '중요', '마무리', '의존', '협동']]
     
+    
+    
+4. Glove 입력값 : list 안의 sentence
+
+    vocab = build_vocab(noun_tagk)
+    cooccur = build_cooccur(vocab, noun_tagk, window_size=params.get('window'))
+    id2word = evaluate.make_id2word(vocab)
+    
+    # 전체 RESUME 의 sentences를 다 잘라서 list에 입력 
+    noun_tagk = ['컴퓨터공학 전공', '공부 회사 머리', '처음 회사 개발 회사', ........ ]
+    
